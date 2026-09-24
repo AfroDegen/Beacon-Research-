@@ -1,20 +1,11 @@
-# ai_sources.py
+import json
 
+try:
+    with open("ai_sources.json") as f:
+        DATA = json.load(f)
+
+except FileNotFoundError:
+    DATA = {}
 
 def get_ai_sources(query):
-
-    print(f"\nQUERY: {query}")
-
-    print(
-        "Paste AI cited domains separated by commas:"
-    )
-
-    raw = input("> ")
-
-    domains = [
-        d.strip()
-        for d in raw.split(",")
-        if d.strip()
-    ]
-
-    return domains
+    return DATA.get(query, [])
