@@ -1,141 +1,202 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Beacon Research Input</title>
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 50px auto;
-            padding: 20px;
-        }
 
-        textarea,
-        input{
-            width:100%;
-            padding:10px;
-            margin:10px 0;
-        }
 
-        button{
-            padding:12px 20px;
-            cursor:pointer;
-        }
 
-        pre{
-            background:#f5f5f5;
-            padding:20px;
-            overflow:auto;
-        }
-    </style>
-</head>
-<body>
 
-<h1>Beacon Research Input</h1>
 
-<label>Query</label>
 
-<input
-id="query"
-placeholder="gift delivery lagos"
-/>
 
-<label>AI Domains</label>
+Beacon Research Input
 
-<textarea
-id="domains"
-rows="8"
-placeholder="giftblooms.com
-reddit.com
-instagram.com">
-</textarea>
 
-<button onclick="generate()">
-Generate JSON
-</button>
 
-<h2>Output</h2>
-
-<pre id="output"></pre>
-
-<script>
-
-function generate() {
-
-    const query =
-        document.getElementById("query")
-        .value
-        .trim();
-
-    const domains =
-        document.getElementById("domains")
-        .value
-        .split("\n")
-        .map(d => d.trim())
-        .filter(Boolean);
-
-    const result = {
-        domains
-    };
-
-    document.getElementById("output")
-        .textContent =
-        JSON.stringify(
-            result,
-            null,
-            2
-        );
+body{
+    font-family: Arial, sans-serif;
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+    background:#f8f8f8;
 }
 
-</script>
+h1{
+    margin-bottom:20px;
+}
 
-</body>
-</html>
-<script>
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
 
-let entries = {};
+input,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+textarea{
+    min-height:180px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.save{
+    background:#1f7aed;
+    color:white;
+}
+
+.download{
+    background:#18a558;
+    color:white;
+}
+
+.clear{
+    background:#d9534f;
+    color:white;
+}
+
+pre{
+    margin-top:20px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    overflow:auto;
+    border:1px solid #ddd;
+}
+
+.small{
+    color:#666;
+    font-size:14px;
+}
+
+
+
+
+
+
+
+Beacon Research Input
+
+
+Capture AI-cited domains for Beacon Retrieval Research.
+
+
+
+Query
+
+
+
+
+
+AI Cited Domains (one per line)
+
+
+
+
+
+
+
+
+Save Entry
+
+
+
+Download JSON
+
+
+
+Clear All
+
+
+
+
+Saved Entries
+
+{}
+
+
+
+let entries =
+JSON.parse(
+localStorage.getItem(
+"beacon_entries"
+)
+) || {};
+
+renderEntries();
 
 function saveEntry() {
 
     const query =
-        document.getElementById("query")
-        .value
-        .trim();
+    document
+    .getElementById("query")
+    .value
+    .trim();
 
     const domains =
-        document.getElementById("domains")
-        .value
-        .split("\n")
-        .map(d => d.trim())
-        .filter(Boolean);
+    document
+    .getElementById("domains")
+    .value
+    .split("\n")
+    .map(d => d.trim())
+    .filter(Boolean);
 
     if (!query) {
-        alert("Enter query");
+
+        alert(
+        "Enter a query."
+        );
+
         return;
     }
 
     entries[query] = domains;
 
+    localStorage.setItem(
+        "beacon_entries",
+        JSON.stringify(entries)
+    );
+
     renderEntries();
 
+    document.getElementById("query").value = "";
     document.getElementById("domains").value = "";
 }
 
 function renderEntries() {
 
-    document.getElementById("saved")
-        .textContent =
-        JSON.stringify(
-            entries,
-            null,
-            2
-        );
+    document
+    .getElementById("saved")
+    .textContent =
+    JSON.stringify(
+        entries,
+        null,
+        2
+    );
 }
 
 function downloadJson() {
 
-    const blob = new Blob(
+    const blob =
+    new Blob(
         [
             JSON.stringify(
                 entries,
@@ -144,23 +205,28 @@ function downloadJson() {
             )
         ],
         {
-            type: "application/json"
+            type:
+            "application/json"
         }
     );
 
     const url =
-        URL.createObjectURL(blob);
+    URL.createObjectURL(blob);
 
     const a =
-        document.createElement("a");
+    document.createElement("a");
 
     a.href = url;
 
-    a.download = "ai_sources.json";
+    a.download =
+    "ai_sources.json";
 
     a.click();
 
     URL.revokeObjectURL(url);
 }
 
-</script>
+function clearAll() {
+
+    if (
+        confirm(
