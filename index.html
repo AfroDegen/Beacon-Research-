@@ -92,3 +92,75 @@ function generate() {
 
 </body>
 </html>
+<script>
+
+let entries = {};
+
+function saveEntry() {
+
+    const query =
+        document.getElementById("query")
+        .value
+        .trim();
+
+    const domains =
+        document.getElementById("domains")
+        .value
+        .split("\n")
+        .map(d => d.trim())
+        .filter(Boolean);
+
+    if (!query) {
+        alert("Enter query");
+        return;
+    }
+
+    entries[query] = domains;
+
+    renderEntries();
+
+    document.getElementById("domains").value = "";
+}
+
+function renderEntries() {
+
+    document.getElementById("saved")
+        .textContent =
+        JSON.stringify(
+            entries,
+            null,
+            2
+        );
+}
+
+function downloadJson() {
+
+    const blob = new Blob(
+        [
+            JSON.stringify(
+                entries,
+                null,
+                2
+            )
+        ],
+        {
+            type: "application/json"
+        }
+    );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download = "ai_sources.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+</script>
