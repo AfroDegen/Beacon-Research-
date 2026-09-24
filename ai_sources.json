@@ -1,0 +1,7 @@
+import json
+
+with open("ai_sources.json") as f:
+    DATA = json.load(f)
+
+def get_ai_sources(query):
+    return DATA.get(query, [])
