@@ -1,6 +1,6 @@
-# config.py
+import os
 
-SERPAPI_KEY = "YOUR_SERPAPI_KEY"
+SERPAPI_KEY = os.getenv("SERPAPI_KEY")
 
 QUERIES = [
     "gift delivery lagos",
