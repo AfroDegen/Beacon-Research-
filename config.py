@@ -1,0 +1,16 @@
+# config.py
+
+SERPAPI_KEY = "YOUR_SERPAPI_KEY"
+
+QUERIES = [
+    "gift delivery lagos",
+    "personalized gifts nigeria",
+    "anniversary gifts lagos",
+    "roof repair houston",
+    "water damage restoration dallas",
+    "corporate gift boxes lagos",
+    "mold remediation dallas",
+    "family lawyer miami",
+    "birthday gifts for her lagos",
+    "wedding photographer lagos"
+]
