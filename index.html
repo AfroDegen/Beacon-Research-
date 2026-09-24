@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+<html lang="en">
 
+<head>
 
+<meta charset="UTF-8">
 
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
+<title>Beacon Research Input</title>
 
-
-
-
-Beacon Research Input
-
-
+<style>
 
 body{
     font-family: Arial, sans-serif;
@@ -73,13 +75,10 @@ button{
     color:white;
 }
 
-pre{
-    margin-top:20px;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    overflow:auto;
-    border:1px solid #ddd;
+.delete{
+    background:#d9534f;
+    color:white;
+    padding:8px 12px;
 }
 
 .small{
@@ -87,52 +86,113 @@ pre{
     font-size:14px;
 }
 
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+    background:white;
+}
 
+th,
+td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:left;
+    vertical-align:top;
+}
 
+th{
+    background:#f1f1f1;
+}
 
+@media(max-width:768px){
 
+    table{
+        font-size:14px;
+    }
 
+    button{
+        width:100%;
+    }
 
-Beacon Research Input
+}
 
+</style>
 
+</head>
+
+<body>
+
+<h1>Beacon Research Input</h1>
+
+<p class="small">
 Capture AI-cited domains for Beacon Retrieval Research.
+</p>
 
-
-
+<label>
 Query
+</label>
 
+<input
+id="query"
+placeholder="gift delivery lagos"
+/>
 
-
-
-
+<label>
 AI Cited Domains (one per line)
+</label>
 
+<textarea
+id="domains"
+placeholder="giftblooms.com
+reddit.com
+instagram.com">
+</textarea>
 
+<div class="buttons">
 
-
-
-
-
-
+<button
+class="save"
+onclick="saveEntry()">
 Save Entry
+</button>
 
-
-
+<button
+class="download"
+onclick="downloadJson()">
 Download JSON
+</button>
 
-
-
+<button
+class="clear"
+onclick="clearAll()">
 Clear All
+</button>
 
+</div>
 
+<h2>Saved Entries</h2>
 
+<table>
 
-Saved Entries
+<thead>
 
-{}
+<tr>
+    <th>Query</th>
+    <th>Domains</th>
+    <th>Count</th>
+    <th>Actions</th>
+</tr>
 
+</thead>
 
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+<script>
 
 let entries =
 JSON.parse(
@@ -143,7 +203,7 @@ localStorage.getItem(
 
 renderEntries();
 
-function saveEntry() {
+function saveEntry(){
 
     const query =
     document
@@ -159,11 +219,9 @@ function saveEntry() {
     .map(d => d.trim())
     .filter(Boolean);
 
-    if (!query) {
+    if(!query){
 
-        alert(
-        "Enter a query."
-        );
+        alert("Enter a query.");
 
         return;
     }
@@ -181,19 +239,53 @@ function saveEntry() {
     document.getElementById("domains").value = "";
 }
 
-function renderEntries() {
+function renderEntries(){
 
-    document
-    .getElementById("saved")
-    .textContent =
-    JSON.stringify(
-        entries,
-        null,
-        2
-    );
+    const tableBody =
+    document.getElementById("tableBody");
+
+    tableBody.innerHTML = "";
+
+    Object.entries(entries)
+    .forEach(([query, domains]) => {
+
+        const row =
+        document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${query}</td>
+
+            <td>${domains.join("<br>")}</td>
+
+            <td>${domains.length}</td>
+
+            <td>
+                <button
+                class="delete"
+                onclick="deleteEntry('${query}')">
+                Delete
+                </button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+
+    });
 }
 
-function downloadJson() {
+function deleteEntry(query){
+
+    delete entries[query];
+
+    localStorage.setItem(
+        "beacon_entries",
+        JSON.stringify(entries)
+    );
+
+    renderEntries();
+}
+
+function downloadJson(){
 
     const blob =
     new Blob(
@@ -205,8 +297,7 @@ function downloadJson() {
             )
         ],
         {
-            type:
-            "application/json"
+            type:"application/json"
         }
     );
 
@@ -226,7 +317,26 @@ function downloadJson() {
     URL.revokeObjectURL(url);
 }
 
-function clearAll() {
+function clearAll(){
 
-    if (
+    if(
         confirm(
+            "Delete all entries?"
+        )
+    ){
+
+        entries = {};
+
+        localStorage.removeItem(
+            "beacon_entries"
+        );
+
+        renderEntries();
+    }
+}
+
+</script>
+
+</body>
+
+</html>
