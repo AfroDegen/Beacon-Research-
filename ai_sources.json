@@ -1,7 +1,12 @@
-import json
-
-with open("ai_sources.json") as f:
-    DATA = json.load(f)
-
-def get_ai_sources(query):
-    return DATA.get(query, [])
+{
+  "gift delivery lagos": [],
+  "personalized gifts nigeria": [],
+  "anniversary gifts lagos": [],
+  "roof repair houston": [],
+  "water damage restoration dallas": [],
+  "corporate gift boxes lagos": [],
+  "mold remediation dallas": [],
+  "family lawyer miami": [],
+  "birthday gifts for her lagos": [],
+  "wedding photographer lagos": []
+}
